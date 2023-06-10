@@ -232,6 +232,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "chronokitty"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "clap",
+ "cucumber",
+ "sqlx",
+ "tokio",
+]
+
+[[package]]
 name = "clap"
 version = "4.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -322,17 +333,6 @@ name = "crc-catalog"
 version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9cace84e55f07e7301bae1c519df89cdad8cc3cd868413d3fdbdeca9ff3db484"
-
-[[package]]
-name = "cronokitty"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "clap",
- "cucumber",
- "sqlx",
- "tokio",
-]
 
 [[package]]
 name = "crossbeam-queue"
