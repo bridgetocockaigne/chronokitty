@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use chrono::{DateTime, Duration, Utc};
 
 #[derive(Debug, Default)]
@@ -5,6 +7,7 @@ pub struct Task {
     pub name: String,
     start_time: Option<DateTime<Utc>>,
     stop_time: Option<DateTime<Utc>>,
+    label: HashSet<String>,
 }
 
 impl Task {
@@ -13,6 +16,7 @@ impl Task {
             name,
             start_time: None,
             stop_time: None,
+            label: HashSet::new(),
         }
     }
 
@@ -41,5 +45,17 @@ impl Task {
             } => *stop_time - *start_time,
             _ => Duration::zero(),
         }
+    }
+
+    pub fn add_label(&mut self, label: String) {
+        self.label.insert(label);
+    }
+
+    pub fn remove_label(&mut self, label: &String) {
+        self.label.remove(label);
+    }
+
+    pub fn has_label(&self, label: &String) -> bool {
+        self.label.contains(label)
     }
 }
