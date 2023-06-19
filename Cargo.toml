@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 chrono = "0.4.26"
-clap = { version = "4.3.3", features = ["derive", "env"] }
+clap = { version = "4.3.4", features = ["derive", "env"] }
 sqlx = { version = "0.6.3", features = [  "runtime-tokio-rustls", "sqlite" ] }
 tokio = { version = "1.28.2", features = ["full"] }
 
