@@ -1,3 +1,4 @@
+use chronokitty::task::Task;
 use std::usize;
 
 use chrono::Duration;
@@ -5,7 +6,7 @@ use cucumber::{given, then, when, World};
 
 #[derive(Debug, Default, World)]
 pub struct TasksWorld {
-    task: chronokitty::Task,
+    task: Task,
 }
 
 pub(crate) async fn run() {
@@ -17,12 +18,12 @@ pub(crate) async fn run() {
 
 #[given(expr = "a task with name {string}")]
 async fn given_a_task(w: &mut TasksWorld, name: String) {
-    w.task = chronokitty::Task::new(name);
+    w.task = Task::new(name);
 }
 
 #[given(expr = "a task with name {string}, and a label with name {string}")]
 async fn given_a_task_and_a_label(w: &mut TasksWorld, name: String, label: String) {
-    w.task = chronokitty::Task::new(name);
+    w.task = Task::new(name);
     w.task.add_label(label);
 }
 
