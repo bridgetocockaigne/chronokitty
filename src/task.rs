@@ -4,15 +4,17 @@ use chrono::{DateTime, Duration, Utc};
 
 #[derive(Debug, Default)]
 pub struct Task {
+    pub id: Option<i64>,
     pub name: String,
-    start_time: Option<DateTime<Utc>>,
-    stop_time: Option<DateTime<Utc>>,
-    label: HashSet<String>,
+    pub start_time: Option<DateTime<Utc>>,
+    pub stop_time: Option<DateTime<Utc>>,
+    pub label: HashSet<String>,
 }
 
 impl Task {
     pub fn new(name: String) -> Self {
         Self {
+            id: None,
             name,
             start_time: None,
             stop_time: None,

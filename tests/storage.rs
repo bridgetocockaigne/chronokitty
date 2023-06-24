@@ -28,7 +28,7 @@ async fn given_a_storage(w: &mut StorageWorld) -> Result<(), StorageError> {
 
 #[when(expr = "the tracker stores a task in storage")]
 async fn stores_a_task(w: &mut StorageWorld) -> Result<(), StorageError> {
-    let task = w.storage.store(w.task).await?;
+    let task = w.storage.store(&w.task).await?;
     w.task = task;
 
     Ok(())
