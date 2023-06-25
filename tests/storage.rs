@@ -1,6 +1,6 @@
 use chronokitty::storage::{Error as StorageError, Storage, StorageBuilder};
 use chronokitty::task::Task;
-use cucumber::{given, when, World};
+use cucumber::{given, then, when, World};
 
 #[derive(Debug, Default, World)]
 pub struct StorageWorld {
@@ -8,6 +8,7 @@ pub struct StorageWorld {
     storage: Storage,
 }
 
+#[allow(dead_code)]
 pub(crate) async fn run() {
     StorageWorld::cucumber()
         .fail_on_skipped()
@@ -32,4 +33,9 @@ async fn stores_a_task(w: &mut StorageWorld) -> Result<(), StorageError> {
     w.task = task;
 
     Ok(())
+}
+
+#[then(expr = "the task gets an id")]
+async fn task_have_an_id(w: &mut StorageWorld) {
+    assert!(w.task.id.is_some());
 }

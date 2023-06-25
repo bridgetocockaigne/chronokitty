@@ -9,6 +9,7 @@ pub struct TasksWorld {
     task: Task,
 }
 
+#[allow(dead_code)]
 pub(crate) async fn run() {
     TasksWorld::cucumber()
         .fail_on_skipped()

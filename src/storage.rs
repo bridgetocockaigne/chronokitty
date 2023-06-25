@@ -1,8 +1,12 @@
 use std::{collections::HashSet, fmt::Display};
 
-use sqlx::{Connection, SqliteConnection};
+use sqlx::{migrate::MigrateError, Connection, SqliteConnection};
 
 use crate::task::Task;
+
+use sqlx::migrate::Migrator;
+
+static MIGRATOR: Migrator = sqlx::migrate!();
 
 #[derive(Debug, Default)]
 pub struct Storage {
@@ -41,9 +45,11 @@ impl StorageBuilder {
             .clone()
             .unwrap_or(String::from("sqlite::memory:"));
 
-        let conn = SqliteConnection::connect(&connection)
+        let mut conn = SqliteConnection::connect(&connection)
             .await
             .map_err(|_| Error::ConnectionError(connection))?;
+
+        MIGRATOR.run(&mut conn).await?;
 
         Ok(Storage { conn: Some(conn) })
     }
@@ -59,25 +65,31 @@ pub enum Error {
     GenericError(),
 }
 
+impl From<MigrateError> for Error {
+    fn from(value: MigrateError) -> Self {
+        Self::OperationError(value.to_string())
+    }
+}
+
 impl From<sqlx::Error> for Error {
     fn from(value: sqlx::Error) -> Self {
         match value {
-            sqlx::Error::Configuration(_) => todo!(),
-            sqlx::Error::Database(_) => todo!(),
-            sqlx::Error::Io(_) => todo!(),
-            sqlx::Error::Tls(_) => todo!(),
-            sqlx::Error::Protocol(_) => todo!(),
-            sqlx::Error::RowNotFound => todo!(),
-            sqlx::Error::TypeNotFound { type_name } => todo!(),
-            sqlx::Error::ColumnIndexOutOfBounds { index, len } => todo!(),
-            sqlx::Error::ColumnNotFound(_) => todo!(),
-            sqlx::Error::ColumnDecode { index, source } => todo!(),
-            sqlx::Error::Decode(_) => todo!(),
-            sqlx::Error::PoolTimedOut => todo!(),
-            sqlx::Error::PoolClosed => todo!(),
-            sqlx::Error::WorkerCrashed => todo!(),
-            sqlx::Error::Migrate(_) => todo!(),
-            _ => todo!(),
+            // sqlx::Error::Configuration(_) => todo!(),
+            sqlx::Error::Database(e) => Self::OperationError(e.to_string()),
+            // sqlx::Error::Io(_) => todo!(),
+            // sqlx::Error::Tls(_) => todo!(),
+            // sqlx::Error::Protocol(_) => todo!(),
+            // sqlx::Error::RowNotFound => todo!(),
+            // sqlx::Error::TypeNotFound { type_name } => todo!(),
+            // sqlx::Error::ColumnIndexOutOfBounds { index, len } => todo!(),
+            // sqlx::Error::ColumnNotFound(_) => todo!(),
+            // sqlx::Error::ColumnDecode { index, source } => todo!(),
+            // sqlx::Error::Decode(_) => todo!(),
+            // sqlx::Error::PoolTimedOut => todo!(),
+            // sqlx::Error::PoolClosed => todo!(),
+            // sqlx::Error::WorkerCrashed => todo!(),
+            // sqlx::Error::Migrate(_) => todo!(),
+            _ => Self::GenericError(),
         }
     }
 }
@@ -85,9 +97,9 @@ impl From<sqlx::Error> for Error {
 impl Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Error::ConnectionError(e) => write!(f, "ConnectionError: {}", e),
-            Error::OperationError(_) => todo!(),
-            Error::GenericError() => todo!(),
+            Self::ConnectionError(e) => write!(f, "Storage::ConnectionError: {}", e),
+            Self::OperationError(e) => write!(f, "Storage::OperationError: {}", e),
+            Self::GenericError() => write!(f, "Storage::GenericError"),
         }
     }
 }

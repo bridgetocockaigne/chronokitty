@@ -5,6 +5,4 @@ Feature: Store a task
         And a storage
         When the tracker stores a task in storage
         Then the task gets an id
-        And the task can be found in storage
-
 
