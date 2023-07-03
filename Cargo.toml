@@ -7,11 +7,10 @@ edition = "2021"
 
 [dependencies]
 chrono = "0.4.26"
-clap = { version = "4.3.8", features = ["derive", "env"] }
-sqlx = { version = "0.6.3", features = ["runtime-tokio-rustls", "sqlite"] }
-tokio = { version = "1.28.2", features = ["full"] }
 serde_json = "1.0"
-
+clap = { version = "4.3.10", features = ["derive", "env"] }
+sqlx = { version = "0.6.3", features = ["runtime-tokio-rustls", "sqlite"] }
+tokio = { version = "1.29.1", features = ["full"] }
 
 [dev-dependencies]
 cucumber = "0.19.1"
