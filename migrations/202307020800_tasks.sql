@@ -3,6 +3,6 @@ CREATE TABLE IF NOT EXISTS tasks (
     name        TEXT                NOT NULL,
     description TEXT                NOT NULL,
     labels      TEXT                NOT NULL,
-    start_date  TEXT                NOT NULL,
+    start_date  TEXT                        ,
     end_date    TEXT
 );
