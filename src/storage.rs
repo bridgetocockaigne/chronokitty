@@ -23,7 +23,7 @@ impl Storage {
             .bind(json!(&task.labels).to_string())
             .bind(format_date(&task.start_date))
             .bind(format_date(&task.end_date))
-            .execute(&mut connection).await?.last_insert_rowid();
+            .execute(&mut *connection).await?.last_insert_rowid();
 
         Ok(Task {
             id: Some(id),
