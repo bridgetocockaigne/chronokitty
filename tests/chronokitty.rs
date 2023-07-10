@@ -22,6 +22,11 @@ async fn create_a_storage(w: &mut ChronoWorld) -> Result<(), Error> {
     Ok(())
 }
 
+#[when(expr = "the user stops the task")]
+async fn user_stops_the_task(w: &mut ChronoWorld) {
+    w.task.stop();
+}
+
 #[when(expr = "the user starts the task")]
 async fn user_starts_the_task(w: &mut ChronoWorld) {
     w.task.start();
@@ -32,8 +37,12 @@ async fn task_is_stored(w: &mut ChronoWorld) -> Result<(), Error> {
     let storage = w.storage.as_ref().ok_or(Error::GenericError())?;
     let task = storage.save(&w.task).await?;
     assert!(task.id.is_some());
-
     Ok(())
+}
+
+#[then(expr = "the task as a duration bigger then 0")]
+async fn task_duration_bigger_then_zero(w: &mut ChronoWorld) {
+    assert!(!w.task.duration().is_zero());
 }
 
 #[tokio::main]

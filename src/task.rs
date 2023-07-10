@@ -1,4 +1,4 @@
-use chrono::{DateTime, Utc};
+use chrono::{DateTime, Duration, Utc};
 
 #[derive(Default, Debug)]
 pub struct Task {
@@ -14,6 +14,16 @@ impl Task {
     pub fn start(&mut self) {
         self.start_date = Some(Utc::now());
     }
+
+    pub fn stop(&mut self) {
+        self.end_date = Some(Utc::now());
+    }
+
+    pub fn duration(&mut self) -> Duration {
+        match self {
+            _ => Duration::zero(),
+        }
+    }
 }
 
 impl Clone for Task {
@@ -22,7 +32,7 @@ impl Clone for Task {
             id: self.id,
             name: self.name.clone(),
             description: self.description.clone(),
-            labels: self.labels.iter().cloned().collect(),
+            labels: self.labels.to_vec(),
             start_date: self.start_date,
             end_date: self.end_date,
         }
